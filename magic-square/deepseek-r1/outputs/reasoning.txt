@@ -1,0 +1,561 @@
+Okay, I need to create a 4x4 magic square where the first row is the date of Indian Independence: 15, 08, 19, 47. The magic square should have the property that every row, column, diagonal, the four corners, and the four middle numbers all sum to the same number. Let's start by understanding the requirements.
+
+First, let me verify the sum of the first row. 15 + 08 + 19 + 47. Let's calculate that: 15 + 8 is 23, 23 +19 is 42, 42 +47 is 89. So the magic constant, which is the sum each row, column, etc., must equal, is 89. So all rows, columns, diagonals, corners, and the middle four numbers should add up to 89.
+
+Now, in Ramanujan's original magic square, each of those elements summed to 139. The structure of his square might give me some clues. Let me recall his square:
+
+First row: 22, 12, 18, 87
+
+Second: 88, 17, 9, 25
+
+Third: 10, 21, 89, 16
+
+Fourth: 19, 86, 23, 11
+
+Looking at this, perhaps there's a pattern or method he used. Maybe it's based on some specific arrangement or mathematical properties. Since the date is split into day, month, year components, perhaps the magic square uses those numbers in a certain way.
+
+But since I need to create a new magic square with the first row as 15, 08, 19, 47, I need to figure out how to arrange the remaining numbers so that all the required sums are 89.
+
+Let me outline the positions in the magic square:
+
+Row 1: 15, 8, 19, 47
+
+Row 2: a, b, c, d
+
+Row 3: e, f, g, h
+
+Row 4: i, j, k, l
+
+Each of these rows must sum to 89. Similarly, each column (1: 15, a, e, i; column 2: 8, b, f, j; etc.), the diagonals (15, b, g, l and 47, c, f, i), the four corners (15, 47, i, l), and the four middle numbers (b, c, f, g) must all sum to 89.
+
+Let me start by noting the required sums:
+
+1. Rows:
+
+- Row 1: 15 + 8 + 19 + 47 = 89 (already satisfied)
+
+- Row 2: a + b + c + d = 89
+
+- Row 3: e + f + g + h = 89
+
+- Row 4: i + j + k + l = 89
+
+2. Columns:
+
+- Column 1: 15 + a + e + i = 89
+
+- Column 2: 8 + b + f + j = 89
+
+- Column 3: 19 + c + g + k = 89
+
+- Column 4: 47 + d + h + l = 89
+
+3. Diagonals:
+
+- Main diagonal: 15 + b + g + l = 89
+
+- Other diagonal: 47 + c + f + i = 89
+
+4. Four corners: 15 + 47 + i + l = 89 ⇒ 15 + 47 = 62, so i + l = 27
+
+5. Middle four numbers: b + c + f + g = 89
+
+This is a lot of equations. Let me see if I can find some relationships or express variables in terms of others.
+
+Starting with the four corners: i + l = 27. Since i and l are in the fourth row (i, j, k, l), which sums to 89. So i + j + k + l = 89. If i + l = 27, then j + k = 89 - 27 = 62.
+
+Looking at column 4: 47 + d + h + l = 89 ⇒ d + h + l = 42. But since l = 27 - i (from corners), maybe substitute that in? Wait, i is in column 1: 15 + a + e + i = 89 ⇒ a + e + i = 74. Hmm, not sure yet.
+
+Looking at the diagonals:
+
+Main diagonal: 15 + b + g + l = 89 ⇒ b + g + l = 74
+
+Other diagonal: 47 + c + f + i = 89 ⇒ c + f + i = 42
+
+Also, the middle four numbers: b + c + f + g = 89
+
+So, combining these equations. Let's note that from the two diagonals:
+
+From main diagonal: b + g = 74 - l
+
+From other diagonal: c + f = 42 - i
+
+Middle four: (b + g) + (c + f) = 89 ⇒ (74 - l) + (42 - i) = 89 ⇒ 116 - (i + l) = 89 ⇒ 116 -27=89. Yes, because i + l=27. 116-27=89. So this checks out. So that's consistent.
+
+So that equation is satisfied. So that's a good check.
+
+Now, let's see if we can find relationships between variables.
+
+Looking at column 1: 15 + a + e + i =89 ⇒ a + e + i =74
+
+Similarly, column 4: 47 + d + h + l =89 ⇒ d + h + l =42
+
+Also, since i + l =27, l =27 -i. So substituting into column 4: d + h + (27 -i) =42 ⇒ d + h -i =15.
+
+From column 1: a + e =74 -i
+
+Not sure yet. Let me think of other equations.
+
+Row 2: a + b + c + d =89
+
+Row 3: e + f + g + h =89
+
+Row 4: i + j + k + l =89, and we know j + k =62.
+
+Let me also note that in Ramanujan's square, the numbers might be arranged such that certain pairs add up to the same thing. For example, in his square, the first row is 22,12,18,87. The second row starts with 88, which is 87 +1, and ends with 25, which is 22 +3. Maybe there's a pattern where numbers are paired in some way. Alternatively, maybe the magic square is constructed using a specific method.
+
+Alternatively, perhaps the square is a Dürer's magic square or uses some other traditional method. However, given that the original Ramanujan square has the date in the first row, perhaps he used a specific algorithm.
+
+Alternatively, perhaps it's based on a certain formula or using complementary pairs. Let's consider that in the original square, each row adds up to 139, and the numbers in the square might be arranged such that each pair in a row adds to a certain number. For example, in the first row: 22 and 87 add to 109, 12 and 18 add to 30. In the second row: 88 and 25 add to 113, 17 and 9 add to 26. Not obvious.
+
+Alternatively, maybe considering the year 1887 split into 18 and 87, and the day 22, month 12. So perhaps the square uses the date components and then fills the rest with numbers that make the sums work.
+
+In our case, the date is 15 (day), 08 (month), 19 (year part?), 47 (year part). So perhaps similar approach: first row is the date, then construct the rest of the square with numbers that make the sums correct.
+
+Alternatively, maybe using the fact that in Ramanujan's square, the second row starts with 88 (which is 87 +1) and ends with 25 (which is 22 +3). The third row starts with 10 (which is 22 -12), then 21, 89 (which is 87 +2), 16. The fourth row has 19 (similar to 10 +9?), 86 (similar to 88 -2), 23, 11. It's not straightforward. Maybe it's better to approach this as a system of equations.
+
+So, let's try to set up variables for the unknown cells.
+
+The magic square is:
+
+Row 1: 15, 8, 19, 47
+
+Row 2: a, b, c, d
+
+Row 3: e, f, g, h
+
+Row 4: i, j, k, l
+
+We need to find a, b, c, d, e, f, g, h, i, j, k, l such that all the row, column, diagonal, etc., sums are 89.
+
+Let me list all equations:
+
+1. Row 2: a + b + c + d = 89
+
+2. Row 3: e + f + g + h = 89
+
+3. Row 4: i + j + k + l = 89
+
+4. Column 1: 15 + a + e + i =89 ⇒ a + e + i =74
+
+5. Column 2: 8 + b + f + j =89 ⇒ b + f + j =81
+
+6. Column 3: 19 + c + g + k =89 ⇒ c + g + k =70
+
+7. Column 4:47 + d + h + l =89 ⇒ d + h + l =42
+
+8. Main diagonal:15 + b + g + l =89 ⇒ b + g + l =74
+
+9. Other diagonal:47 + c + f + i =89 ⇒ c + f + i =42
+
+10. Four corners:15 + 47 + i + l =89 ⇒ i + l =27
+
+11. Middle four: b + c + f + g =89
+
+So, that's 11 equations with 12 variables. But we need to find integers that satisfy all these.
+
+Additionally, all numbers should presumably be distinct and positive integers. Also, in the original square, numbers like 9, 10, 11, 12, etc., are used. So maybe similar small numbers, but there might be larger numbers as well. For example, in the original square, 87, 88, 89 are present. So in our case, since the first row includes 47, maybe the square includes numbers around that range or lower. But not sure.
+
+Let me start by trying to express variables in terms of others.
+
+From equation 10: i + l =27 ⇒ l =27 -i
+
+From equation 7: d + h + l =42 ⇒ d + h + (27 -i) =42 ⇒ d + h =42 -27 +i ⇒ d + h =15 +i
+
+From equation 8: b + g + l =74 ⇒ b + g + (27 -i) =74 ⇒ b + g =74 -27 +i ⇒ b + g =47 +i
+
+From equation 9: c + f + i =42 ⇒ c + f =42 -i
+
+From equation 11: b + c + f + g =89. Substitute b + g from equation 8 (47 +i) and c + f from equation 9 (42 -i):
+
+(47 +i) + (42 -i) =89 ⇒ 47 +42 =89 ⇒ 89=89. So this equation is redundant. That's good, meaning the previous equations are consistent.
+
+Now, let's look at other equations.
+
+From equation 4: a + e + i =74 ⇒ a + e =74 -i
+
+From equation 3: i + j + k + l =89 ⇒ j + k =89 -i -l ⇒ since l =27 -i, j + k =89 -i - (27 -i) =89 -27=62. So j + k=62.
+
+From equation 6: c + g + k =70 ⇒ since k=62 -j (from j +k=62), then c + g + (62 -j)=70 ⇒ c + g =70 -62 +j=8 +j
+
+But from equation 8: b + g =47 +i ⇒ g=47 +i -b
+
+So substituting into c + g =8 +j:
+
+c + (47 +i -b) =8 +j ⇒ c +47 +i -b =8 +j ⇒ c -b +i +47 -8 =j ⇒ c -b +i +39 =j
+
+But from equation 5: b + f + j =81 ⇒ j =81 -b -f
+
+So substituting into the above equation:
+
+c -b +i +39 =81 -b -f ⇒ c +i +39 =81 -f ⇒ c +i +f =42
+
+But from equation 9: c + f +i =42, which is exactly the same. So again, redundant. So that's consistent.
+
+This suggests that we have multiple dependencies but no contradictions. Let's see if we can find a way to assign values step by step.
+
+Let's consider possible values for i. Since i is part of the fourth row, and i + l =27, and l must be positive, so i can range from 1 to 26. But given that the original square had some numbers in the 80s and others in the teens, perhaps i is a smaller number, but not necessarily.
+
+But since we need to use numbers that might be related to the date, or perhaps follow some pattern. Alternatively, maybe we can choose i such that some equations simplify.
+
+Alternatively, let's try to assume a value for i. Let's say i=19. Then l=27 -19=8. But 8 is already in the first row (second column). So that might not be allowed if we need all numbers to be unique. Similarly, if i=15, l=12, but 15 and 12 are in the first row. So perhaps we need to choose i such that l is not already in the first row. The first row has 15,8,19,47. So l cannot be 15,8,19,47. So i cannot be 27 - l where l is 15,8,19,47. So l can't be 15, so i=27 -15=12 is possible? Wait, l=15 would require i=12. But l is in the fourth row's last element. Let me see. If i=12, then l=15. But 15 is already in the first row. So we need to avoid l being 15,8,19,47. Therefore, l must be a number not in the first row. So possible l could be, say, 11, then i=16. Let's try that.
+
+But maybe pick a value for i that allows other equations to have integer solutions. Let's try i=11. Then l=27 -11=16.
+
+Now, check if 16 is already present. In the first row, numbers are 15,8,19,47. 16 is not there. So okay.
+
+Now, with i=11 and l=16:
+
+From equation 4: a + e +11=74 ⇒ a + e=63.
+
+From equation 7: d + h +16=42 ⇒ d + h=26.
+
+From equation 8: b + g=47 +11=58.
+
+From equation 9: c + f +11=42 ⇒ c + f=31.
+
+From equation 5: b + f + j=81 ⇒ j=81 -b -f.
+
+From equation 6: c + g +k=70. Also, from equation 3: i + j +k +l=89 ⇒ 11 + j +k +16=89 ⇒ j +k=62 ⇒ k=62 -j.
+
+So substituting j=81 -b -f into k=62 -j:
+
+k=62 - (81 -b -f)=62 -81 +b +f= -19 +b +f.
+
+So k= -19 +b +f. Since k must be positive, -19 +b +f >0 ⇒ b +f >19.
+
+From equation 6: c + g +k=70. But c=31 -f (from c + f=31). And g=58 -b (from b +g=58). And k= -19 +b +f. So:
+
+(31 -f) + (58 -b) + (-19 +b +f) =70
+
+Simplify:
+
+31 -f +58 -b -19 +b +f =70
+
+Combine like terms:
+
+(31 +58 -19) + (-f +f) + (-b +b) =70
+
+70=70. So this equation is satisfied. So again, redundant.
+
+Thus, we need to find values for b and f such that:
+
+c=31 -f
+
+g=58 -b
+
+k= -19 +b +f
+
+Also, from equation 2: a + b + c + d=89. Since c=31 -f, and d=26 -h (from d +h=26). But h is unknown. Wait, we can express d in terms of h: d=26 -h.
+
+But then row 2: a + b + (31 -f) + (26 -h)=89 ⇒ a +b -f -h +57=89 ⇒ a +b -f -h=32.
+
+But a +e=63 from equation 4. Also, from equation 3: row 3: e + f +g +h=89. Substitute g=58 -b:
+
+e +f + (58 -b) +h=89 ⇒ e +f +58 -b +h=89 ⇒ e +f -b +h=31.
+
+From equation 4: a +e=63 ⇒ e=63 -a. Substitute into above:
+
+(63 -a) +f -b +h=31 ⇒ -a +f -b +h= -32 ⇒ a= f -b +h +32.
+
+But from row 2 equation above: a +b -f -h=32 ⇒ substitute a= f -b +h +32 into this:
+
+(f -b +h +32) +b -f -h=32 ⇒ f -b +h +32 +b -f -h=32 ⇒ 32=32. Again, redundant.
+
+This suggests that we can choose variables freely as long as certain conditions are met. However, we need to ensure that all numbers are positive integers and distinct.
+
+Given that, let's try to assign values step by step.
+
+Let me pick a value for h. Since d +h=26, d and h must be positive integers. Let's choose h=10, then d=16. But 16 is already used as l=16. So can't have d=16. So h=10 is invalid. Next, h=9, then d=17. 17 not used yet. So d=17, h=9.
+
+Then, from row 3: e + f +g +h=89. g=58 -b. h=9. So e + f + (58 -b) +9=89 ⇒ e +f -b=22.
+
+But e=63 -a. So (63 -a) +f -b=22 ⇒ -a +f -b= -41 ⇒ a= f -b +41.
+
+From row 2: a +b +c +d=89. We have a= f -b +41, c=31 -f, d=17.
+
+So substituting into row 2:
+
+(f -b +41) +b + (31 -f) +17=89 ⇒ f -b +41 +b +31 -f +17=89 ⇒ (41 +31 +17) + (f -b +b -f)=89 ⇒ 89=89. So again, redundant.
+
+This means that as long as we choose h and d such that d +h=26, and assign other variables accordingly, we can satisfy the equations. However, we need to ensure that all numbers are positive integers and distinct from those in the first row (15,8,19,47) and from each other.
+
+Let's try h=7, then d=19. But 19 is already in the first row. Not allowed.
+
+h=8, d=18. 8 is in the first row. Not allowed.
+
+h=6, d=20. 20 is new.
+
+So d=20, h=6.
+
+Then row 3: e + f +g +6=89 ⇒ e +f +g=83. But g=58 -b.
+
+So e +f +58 -b=83 ⇒ e +f -b=25.
+
+From e=63 -a, substitute: 63 -a +f -b=25 ⇒ -a +f -b= -38 ⇒ a= f -b +38.
+
+From row 2: a +b +c +20=89. c=31 -f.
+
+So a +b +31 -f +20=89 ⇒ a +b -f=38.
+
+But a= f -b +38. Substitute:
+
+(f -b +38) +b -f=38 ⇒ f -b +38 +b -f=38 ⇒ 38=38. Again, redundant.
+
+So again, this approach isn't giving new info. Let's instead try to assign a value to b and see if we can find valid numbers.
+
+From equation 8: b +g=58. So g=58 -b.
+
+From equation 9: c +f=31 -i. Wait, no, equation 9 is c +f +i=42. Since i=11 in our assumption, c +f=31.
+
+So c=31 -f.
+
+From equation 5: b +f +j=81 ⇒ j=81 -b -f.
+
+From equation 3: j +k=62 ⇒ k=62 -j=62 - (81 -b -f)= -19 +b +f.
+
+From equation 6: c +g +k=70. Substitute c=31 -f, g=58 -b, k= -19 +b +f:
+
+(31 -f) + (58 -b) + (-19 +b +f) =70 ⇒31 -f +58 -b -19 +b +f=70 ⇒ (31+58-19)+( -f +f -b +b)=70 ⇒70=70. Again, redundant.
+
+So, the challenge is to choose b and f such that k= -19 +b +f is positive and all numbers are unique and not in the first row.
+
+Let's pick b=20. Then g=58 -20=38.
+
+Then c=31 -f.
+
+From k= -19 +20 +f=1 +f. So k=1 +f. To have k positive, f must be at least 0, but f should be positive.
+
+Let's choose f=10. Then c=31 -10=21, k=1 +10=11. But i=11 already (since we set i=11 earlier). So k=11, which is same as i=11. Not allowed. So invalid.
+
+Next, f=12. Then c=31 -12=19. But 19 is in the first row. Invalid.
+
+f=9. c=31 -9=22. 22 not in first row. k=1 +9=10. 10 is new.
+
+So c=22, k=10.
+
+Now, j=81 -b -f=81 -20 -9=52. j=52. Then k=10, which is 62 -j=62 -52=10. Correct.
+
+Now, check if 52 is unique. So far, numbers in the square are:
+
+Row 1:15,8,19,47
+
+Row 2:a,20,22,20 (wait, d=20? Earlier we set d=20 when h=6. Wait, in this case, we assumed i=11, l=16, h=6, d=20. So yes, d=20. So row 2: a,20,22,20. But d=20, which is duplicate. So can't have d=20 and a=... Wait, need to check.
+
+Wait, in this scenario, with i=11, l=16, h=6, d=20.
+
+From equation 4: a + e +11=74 ⇒ a +e=63.
+
+From equation 3: row 3 is e, f=9, g=38, h=6. So row 3: e,9,38,6. Sum: e +9 +38 +6= e +53=89 ⇒ e=36.
+
+So a +36=63 ⇒ a=27.
+
+Now, row 2:27,20,22,20. Wait, but d=20, and we have 20 in the second row twice. That's invalid. So this is a problem.
+
+Thus, this choice leads to duplicates. So need to pick different values.
+
+Let me backtrack. We set i=11, l=16, h=6, d=20. Then in row 3, we have e=36, f=9, g=38, h=6.
+
+Row 3:36,9,38,6. Sum:36+9=45, 38+6=44; total 89. Okay.
+
+Row 2: a=27, b=20, c=22, d=20. But d=20 is duplicate in the same row. Not allowed.
+
+Thus, invalid. So need to avoid this.
+
+Therefore, need to choose f such that k=1 +f is not equal to i=11, and other numbers are unique.
+
+Alternatively, pick b=25. Then g=58 -25=33.
+
+Then c=31 -f.
+
+k= -19 +25 +f=6 +f.
+
+Choose f=10. Then c=31 -10=21, k=16. But l=16 already. So k=16 is duplicate. Not allowed.
+
+f=9: c=22, k=15. 15 is in the first row.
+
+f=8: c=23, k=14. 8 is in the first row, so f=8 is duplicate? Wait, f is in the third row, second column. The first row has 8 in column 2. So if f=8, that's duplicate. So invalid.
+
+f=7: c=24, k=13. Okay, new numbers.
+
+Then j=81 -b -f=81 -25 -7=49. k=13, so j +k=49 +13=62. Correct.
+
+Now, row 3: e=63 -a. From equation 4: a + e=63 ⇒ e=63 -a.
+
+From row 3: e +f +g +h=89 ⇒ e +7 +33 +6=89 ⇒ e +46=89 ⇒ e=43. Therefore, a=63 -43=20.
+
+But b=25, c=24, d=20. So row 2:20,25,24,20. Again, duplicate 20s. Invalid.
+
+This approach isn't working. Maybe i=11 is a bad choice. Let's try another i.
+
+Let me try i=10. Then l=27 -10=17.
+
+Check if l=17 is unique. First row has 15,8,19,47. 17 is new.
+
+Now:
+
+From equation 4: a +e +10=74 ⇒ a +e=64.
+
+From equation 7: d +h +17=42 ⇒ d +h=25.
+
+From equation 8: b +g=47 +10=57.
+
+From equation 9: c +f +10=42 ⇒ c +f=32.
+
+From equation 5: b +f +j=81 ⇒ j=81 -b -f.
+
+From equation 3: i +j +k +l=89 ⇒10 +j +k +17=89 ⇒j +k=62 ⇒k=62 -j.
+
+From equation 6: c +g +k=70. Substitute c=32 -f, g=57 -b, k=62 -j=62 - (81 -b -f)= -19 +b +f.
+
+So:
+
+(32 -f) + (57 -b) + (-19 +b +f)=70 ⇒32 -f +57 -b -19 +b +f=70 ⇒(32 +57 -19) + (-f +f -b +b)=70 ⇒70=70. Redundant.
+
+So similar structure. Let's try assigning values.
+
+Choose h=10, then d=15. But d=15 is in the first row. Invalid.
+
+h=9, d=16. 16 is new.
+
+So d=16, h=9.
+
+Row 3: e +f +g +9=89 ⇒e +f +g=80. But g=57 -b.
+
+So e +f +57 -b=80 ⇒e +f -b=23.
+
+From equation 4: a +e=64 ⇒e=64 -a.
+
+Substitute into above:
+
+64 -a +f -b=23 ⇒-a +f -b= -41 ⇒a= f -b +41.
+
+Row 2: a +b +c +16=89. c=32 -f.
+
+So a +b +32 -f +16=89 ⇒a +b -f=41.
+
+But a= f -b +41. Substitute:
+
+(f -b +41) +b -f=41 ⇒41=41. Redundant.
+
+Again, need to choose b and f.
+
+From equation 5: j=81 -b -f.
+
+From equation 3: k=62 -j=62 -81 +b +f= -19 +b +f.
+
+From equation 6: c +g +k=70. But c=32 -f, g=57 -b, k= -19 +b +f.
+
+So:
+
+32 -f +57 -b + (-19 +b +f)=70 ⇒32 -f +57 -b -19 +b +f=70 ⇒70=70. Redundant.
+
+Now, assign b=25. Then g=57 -25=32.
+
+c=32 -f.
+
+k= -19 +25 +f=6 +f.
+
+Choose f=10. Then c=22, k=16. But d=16 already. So k=16 duplicate.
+
+f=9. c=23, k=15. 15 in first row.
+
+f=8. c=24, k=14. 8 is in first row (second column). So f=8 is duplicate.
+
+f=7. c=25, k=13. But b=25 already. So duplicate.
+
+f=6. c=26, k=12.
+
+Then j=81 -25 -6=50. k=12, so j +k=50 +12=62. Correct.
+
+Now, row 3: e=64 -a.
+
+From row 3: e +f +g +h=89 ⇒e +6 +32 +9=89 ⇒e +47=89 ⇒e=42. Therefore, a=64 -42=22.
+
+So row 2: a=22, b=25, c=26, d=16. Check duplicates:22,25,26,16. None of these are in the first row. 16 is in d, but first row has 15,8,19,47. Okay.
+
+Row 3:42,6,32,9. Sum:42+6=48, 32+9=41, total 89. Correct.
+
+Row 4: i=10, j=50, k=12, l=17. Sum:10+50+12+17=89. Correct.
+
+Now, check columns:
+
+Column 1:15 +22 +42 +10=15+22=37, 37+42=79, 79+10=89. Correct.
+
+Column 2:8 +25 +6 +50=8+25=33, 33+6=39, 39+50=89. Correct.
+
+Column 3:19 +26 +32 +12=19+26=45, 45+32=77, 77+12=89. Correct.
+
+Column 4:47 +16 +9 +17=47+16=63, 63+9=72, 72+17=89. Correct.
+
+Diagonals:
+
+Main diagonal:15 +25 +32 +17=15+25=40, 40+32=72, 72+17=89. Correct.
+
+Other diagonal:47 +26 +6 +10=47+26=73, 73+6=79, 79+10=89. Correct.
+
+Four corners:15,47,10,17. Sum:15+47=62, 10+17=27, total 89. Correct.
+
+Middle four:25,26,6,32. Sum:25+26=51, 6+32=38, total 89. Correct.
+
+All numbers are unique: let's list them:
+
+First row:15,8,19,47
+
+Row 2:22,25,26,16
+
+Row3:42,6,32,9
+
+Row4:10,50,12,17
+
+Check for duplicates:15,8,19,47,22,25,26,16,42,6,32,9,10,50,12,17. All unique. Great.
+
+Now, let's verify if all numbers are positive integers, which they are.
+
+So the magic square would be:
+
+[
+
+[15, 8, 19, 47],
+
+[22, 25, 26, 16],
+
+[42, 6, 32, 9],
+
+[10, 50, 12, 17]
+
+]
+
+Check all sums:
+
+Rows:
+
+Row 1:15+8+19+47=89
+
+Row 2:22+25+26+16=89
+
+Row 3:42+6+32+9=89
+
+Row 4:10+50+12+17=89
+
+Columns:
+
+Col1:15+22+42+10=89
+
+Col2:8+25+6+50=89
+
+Col3:19+26+32+12=89
+
+Col4:47+16+9+17=89
+
+Diagonals:
+
+15+25+32+17=89
+
+47+26+6+10=89
+
+Corners:15+47+10+17=89
+
+Middle four:25+26+6+32=89
+
+Everything checks out. So this should be the magic square.

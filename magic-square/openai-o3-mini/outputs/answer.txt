@@ -1,0 +1,15 @@
+Below is one of the commonly cited versions of “Ramanujan’s magic square” written as a 2D array (in this example, a Python‐style list of lists). In this square each row and each column sums to 111. (Note that while many “magic squares” require both main diagonals to sum to the magic constant, this famous square—often called a semi‐magic square—has rows and columns summing to 111 but not its diagonals.)
+
+python
+Copy
+ramanujan_magic_square = [
+    [22, 12, 18, 59],   # 22 + 12 + 18 + 59 = 111
+    [13, 21, 24, 53],   # 13 + 21 + 24 + 53 = 111
+    [17, 14, 20, 60],   # 17 + 14 + 20 + 60 = 111
+    [59, 64, 49, -61]   # 59 + 64 + 49 + (-61) = 111
+]
+A Few Notes
+Birth Date Elements: The top row is often noted because its first two entries (22 and 12) are said to represent Ramanujan’s day and month of birth (he was born on 22 December 1887). The other two numbers are determined by the requirement that the row sum equals 111.
+Semi‐Magic: Although all rows and columns add up to 111, the two main diagonals do not; hence this square is “semi‐magic” by the strictest definitions.
+Variations Exist: There are a few variations of the square in the literature. The version above is one of the versions most frequently shown and attributed to Ramanujan.
+You can use or adapt the above 2D array in your own code as needed.

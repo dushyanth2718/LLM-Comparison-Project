@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Token Size Comparison Report</title>
+  <style>
+    table, th, td {
+      border: 1px solid black;
+      border-collapse: collapse;
+      padding: 8px;
+      text-align: center;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+    body {
+      font-family: Arial, sans-serif;
+    }
+    h1 {
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <h1>Token Size Comparison Report</h1>
+  <table>
+    <tr>
+      <th>Experiment</th>
+      <th>Model</th>
+      <th>Reasoning Tokens</th>
+      <th>Answer Tokens</th>
+      <th>Total Tokens</th>
+    </tr>
+<tr><td>Tetris Trial 1</td><td>openai-o3-mini</td><td>771</td><td>1412</td><td>2183</td></tr>
+<tr><td>Tetris Trial 1</td><td>deepseek-r1</td><td>5934</td><td>1051</td><td>6985</td></tr>
+<tr><td>Tetris Trial 2</td><td>openai-o3-mini</td><td>157</td><td>1361</td><td>1518</td></tr>
+<tr><td>Tetris Trial 2</td><td>deepseek-r1</td><td>638</td><td>798</td><td>1436</td></tr>
+<tr><td>Hangman</td><td>openai-o3-mini</td><td>365</td><td>767</td><td>1132</td></tr>
+<tr><td>Hangman</td><td>deepseek-r1</td><td>4007</td><td>664</td><td>4671</td></tr>
+<tr><td>Magic Square</td><td>openai-o3-mini</td><td>1471</td><td>251</td><td>1722</td></tr>
+<tr><td>Magic Square</td><td>deepseek-r1</td><td>4136</td><td>209</td><td>4345</td></tr>
+
+  </table>
+</body>
+</html>

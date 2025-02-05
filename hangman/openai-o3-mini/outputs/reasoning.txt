@@ -1,0 +1,47 @@
+Crafting the Hangman game
+
+I’m developing a Hangman game in Python, featuring a random movie clue, automatic hangman animations for wrong guesses, and a scoring system that congratulates correctly guessed movies.
+
+Crafting movie clues
+
+I’m thinking through a dictionary of movie names and clues, like "Titanic" with "A ship sinks in the icy Atlantic ocean," or "Inception" with "A thief enters dreams to steal secrets."
+
+Mapping out the game
+
+I’m defining a main() function with a loop for selecting random movies and clues. Integrating interactive hangman logic, we’ll update states for each incorrect guess and manage spaces and punctuation.
+
+Wondering about the format
+
+I’m thinking letter-by-letter guesses work best, aligning with typical hangman gameplay. Each incorrect guess reveals a new hangman animation, making the game progress in a clear, exciting way.
+
+Crafting the game flow
+
+I’m mapping out selecting movies, initializing game states, managing hangman animations, and updating guesses. Checking if the movie name is guessed or if guesses exceed the limit ensures gameplay progression.
+
+Mapping out game logic
+
+I’m creating a play_hangman(movie, clue) function to manage each round, ensuring correct naming conventions, docstrings, and type annotations for cleaner, more understandable code.
+
+Crafting hangman visuals
+
+I’m assembling a list of multi-line strings to represent progressive hangman states. Each string uniquely illustrates the hangman drawing, adapted to the guessed character count.
+
+Charting hangman stages
+
+I’m outlining a sequence of hangman drawings to track incorrect guesses, ranging from 0 to 6. Repeated and non-alphabetic guesses are managed via a set of guessed letters.
+
+Transforming input
+
+I’m thinking through converting movie titles and clues to lowercase, revealing spaces, and using a list comprehension to update the display word with correct and hyphen characters.
+
+Refining the script
+
+I’m adding type annotations and docstrings, incorporating import statements, and establishing a hanger stage list. This paves the way for a comprehensive and intuitive script.
+
+Starting the game
+
+I’m planning a hangman game, detailing MOVIE_CLUES, setting up guessed_letters and wrong_guesses, and preparing to reveal the movie titles and clues.
+
+Starting the game
+
+I’m prompting the user to guess a letter, checking for validity and previous guesses, updating the movie display, and managing the win or loss states to ensure a full experience.

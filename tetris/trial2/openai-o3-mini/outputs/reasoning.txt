@@ -1,0 +1,41 @@
+Crafting Tetris in Python
+
+Crafting Pygame Tetris
+
+Crafting the Tetris grid and pieces.
+
+Mapping Tetris structures
+
+Crafting shape coordinates
+
+Mapping Tetris shapes and colors.
+
+Mapping Tetris pieces and colors.
+
+Mapping out Tetris game functions and main loop.
+
+Preparing the Tetris script
+
+Crafting Tetris functions
+
+Calculating Tetris piece positions accurately for mapping the shape's location.
+
+Crafting Tetris functions and loop progress.
+
+Shifting and clearing rows effectively.
+
+Mapping out Tetris gameplay
+
+Ensuring precise Tetris implementation
+
+Crafting the Tetris essence
+
+I’m diving into a Python Tetris game using pygame, ensuring setup, Tetris mechanics, and game loop are set correctly.
+
+Mapping out game dynamics
+
+Laying out global variables, screen dimensions, and Tetris shapes. Each shape includes all possible rotations and formatted to match a 5x5 grid. Progress is steady and structured.
+
+Mapping out the game
+
+I’ve ADJUSTED the Tetris setup, including piece movement, grid management, and scoring. It’s interesting to see how each function seamlessly contributes to the overall gameplay dynamics.

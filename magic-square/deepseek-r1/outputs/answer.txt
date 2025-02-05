@@ -1,0 +1,45 @@
+To construct a magic square for the date 15, 08, 19, 47 (Indian Independence) with the first row as these numbers and all rows, columns, diagonals, corners, and the middle four numbers summing to 89, we can use the following arrangement:
+
+Magic Square:
+
+Copy
+[
+    [15,  8, 19, 47],
+    [22, 25, 26, 16],
+    [42,  6, 32,  9],
+    [10, 50, 12, 17]
+]
+Verification:
+
+Rows:
+
+Row 1: 15 + 8 + 19 + 47 = 89
+
+Row 2: 22 + 25 + 26 + 16 = 89
+
+Row 3: 42 + 6 + 32 + 9 = 89
+
+Row 4: 10 + 50 + 12 + 17 = 89
+
+Columns:
+
+Column 1: 15 + 22 + 42 + 10 = 89
+
+Column 2: 8 + 25 + 6 + 50 = 89
+
+Column 3: 19 + 26 + 32 + 12 = 89
+
+Column 4: 47 + 16 + 9 + 17 = 89
+
+Diagonals:
+
+Main Diagonal: 15 + 25 + 32 + 17 = 89
+
+Other Diagonal: 47 + 26 + 6 + 10 = 89
+
+Corners: 15 + 47 + 10 + 17 = 89
+
+Middle Four Numbers: 25 + 26 + 6 + 32 = 89
+
+All numbers are distinct and satisfy the magic constant of 89.
+

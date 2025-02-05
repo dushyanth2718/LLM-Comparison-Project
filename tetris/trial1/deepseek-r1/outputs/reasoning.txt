@@ -1,0 +1,1261 @@
+Okay, I need to write a Tetris game in Python. Let me think about how to approach this. First, I remember that Pygame is a good library for games, so I'll use that. Let me start by setting up the basic Pygame window. I'll need to initialize Pygame, set the screen size, maybe 800x600. Then, set a caption like "Tetris".
+
+Next, the game grid. Tetris has a standard grid size, usually 10x20 blocks. Each block is a square, maybe 30x30 pixels. So the play area will be 300 pixels wide (10*30) and 600 pixels tall (20*30). But the screen is 800x600, so I can place the grid on the left side and have space on the right for showing the next piece or score.
+
+Colors for the different Tetris shapes. There are seven different tetrominoes: I, O, T, L, J, S, Z. Each has a specific color. I can create a list of colors for each shape. Maybe use predefined colors in Pygame like cyan for I, yellow for O, etc.
+
+Shapes themselves can be represented as lists of their block positions. For example, the I shape is four blocks in a line. Each shape can have multiple rotations. So maybe a 3D list where each shape has different rotations, each rotation being a list of (x, y) coordinates relative to the center.
+
+Now, the game loop. The main loop will handle events, update the game state, and redraw the screen. Events like key presses for moving and rotating the pieces. The falling speed can be controlled by a timer—maybe using Pygame's clock to control the frame rate and a variable to track when the piece should drop.
+
+The current piece is an instance of one of the shapes. When it lands, it's merged into the grid, and a new piece is spawned. Check for completed lines when a piece lands. If a line is full, clear it and add to the score. Also, need to handle game over when a new piece can't spawn because the grid is full.
+
+Collision detection is important. When moving or rotating a piece, check if any of its blocks are outside the grid or overlapping existing blocks. If so, the move isn't allowed.
+
+Scoring: Maybe award points based on the number of lines cleared at once. Like 100 points for a single line, 300 for two, etc.
+
+Displaying the next piece: On the right side of the screen, show what the next piece is. So, I need to generate a queue of pieces. Maybe just keep the next piece stored and display it in a small grid.
+
+Let me outline the steps in code:
+
+1. Initialize Pygame, set up the screen.
+
+2. Define the grid dimensions and colors.
+
+3. Define the shapes and their rotations.
+
+4. Create a function to draw the grid and current pieces.
+
+5. Handle user input for moving left, right, down, rotating, and dropping.
+
+6. Implement the piece movement with collision checks.
+
+7. Merge the piece into the grid when it lands.
+
+8. Check for completed lines and clear them.
+
+9. Update the score and level.
+
+10. Spawn new pieces and check for game over.
+
+Wait, the level system? Maybe increase speed as the score increases. But maybe that's beyond the initial scope. Let's focus on the basics first.
+
+Possible issues: Rotating pieces might cause them to go out of bounds. Need to handle rotation with wall kicks, but maybe for simplicity, just check if the rotated position is valid, otherwise, don't rotate.
+
+Implementing the shapes: Each shape's rotations. For example, the I piece has two rotations: horizontal and vertical. Each rotation is a list of (x, y) offsets from the rotation point.
+
+The grid can be a 2D list where each cell is either 0 (empty) or a color index. When a piece is placed, set the corresponding cells to the color.
+
+Drawing the grid: Loop through each cell and draw a rectangle if it's filled. Also draw the current piece in its position.
+
+Handling the current piece: Track its position (x, y), shape, rotation. When moving, check if the new position is valid. If moving down and can't, then lock the piece in place.
+
+Testing for line completion: After locking a piece, check each row from bottom to top. If all cells in a row are filled, remove that row, add to the score, and shift all rows above down.
+
+Spawning a new piece: Select a random shape, check if its initial position is valid. If not, game over.
+
+Now, coding this step by step.
+
+First, the Pygame setup:
+
+import pygame
+
+import random
+
+pygame.init()
+
+Then screen setup:
+
+screen_width = 800
+
+screen_height = 600
+
+screen = pygame.display.set_mode((screen_width, screen_height))
+
+pygame.display.set_caption("Tetris")
+
+Colors:
+
+colors = [
+
+(0, 0, 0),          # Black (empty)
+
+(0, 255, 255),      # Cyan (I)
+
+(255, 255, 0),      # Yellow (O)
+
+(128, 0, 128),      # Purple (T)
+
+(0, 0, 255),        # Blue (J)
+
+(255, 165, 0),      # Orange (L)
+
+(0, 255, 0),        # Green (S)
+
+(255, 0, 0)         # Red (Z)
+
+]
+
+Shapes and their rotations:
+
+shapes = [
+
+[[1, 1, 1, 1]],  # I
+
+[[1, 1], [1, 1]],# O
+
+[[1, 1, 1], [0, 1, 0]], # T
+
+[[1, 1, 1], [1, 0, 0]], # L
+
+[[1, 1, 1], [0, 0, 1]], # J
+
+[[1, 1, 0], [0, 1, 1]], # S
+
+[[0, 1, 1], [1, 1, 0]]  # Z
+
+]
+
+Wait, that's not correct. The shapes should be represented as coordinates. Alternatively, perhaps each shape is a list of (x, y) positions. For example, the I shape in horizontal orientation is [ (0,0), (1,0), (2,0), (3,0) ] but centered. Hmm, perhaps each shape has a list of its rotations, each rotation being a list of tuples indicating the positions relative to the center.
+
+Alternatively, looking up standard Tetris rotation data. For example, the I piece in different rotations.
+
+But perhaps a better approach is to represent each shape's rotations as lists of relative positions. For example, the I piece:
+
+rotations_I = [
+
+[ (-1, 0), (0, 0), (1, 0), (2, 0) ],
+
+[ (0, -1), (0, 0), (0, 1), (0, 2) ],
+
+[ (-1, 0), (0, 0), (1, 0), (2, 0) ],
+
+[ (0, -1), (0, 0), (0, 1), (0, 2) ]
+
+]
+
+Wait, but perhaps the standard way is to have each shape's rotations as a list, and each rotation is a list of (x, y) positions. So perhaps:
+
+shapes = [
+
+# I
+
+[
+
+[ (-2, 0), (-1, 0), (0, 0), (1, 0) ],
+
+[ (0, -1), (0, 0), (0, 1), (0, 2) ]
+
+],
+
+# O
+
+[
+
+[ (0, 0), (1, 0), (0, 1), (1, 1) ]
+
+],
+
+# T
+
+[
+
+[ (-1, 0), (0, 0), (1, 0), (0, 1) ],
+
+[ (0, -1), (0, 0), (0, 1), (-1, 0) ],
+
+[ (-1, 0), (0, 0), (1, 0), (0, -1) ],
+
+[ (0, -1), (0, 0), (0, 1), (1, 0) ]
+
+],
+
+# and so on for other shapes
+
+]
+
+But this is getting complicated. Maybe a better way is to refer to the standard Tetris rotation data. Alternatively, use a list for each shape's rotations. Let me look up the standard representations.
+
+Alternatively, since this is a basic implementation, maybe simplify the rotations. For example, the S shape has two rotations. But perhaps for this code, it's easier to use predefined rotations.
+
+Alternatively, use a list for each shape's rotations. For example, for the I shape:
+
+shapes = [
+
+# I
+
+[
+
+[ (0, 0), (1, 0), (2, 0), (3, 0) ],
+
+[ (0, 0), (0, 1), (0, 2), (0, 3) ]
+
+],
+
+# O
+
+[
+
+[ (0, 0), (1, 0), (0, 1), (1, 1) ]
+
+],
+
+# T
+
+[
+
+[ (0, 0), (1, 0), (2, 0), (1, 1) ],
+
+[ (1, 0), (1, 1), (1, 2), (0, 1) ],
+
+[ (0, 1), (1, 1), (2, 1), (1, 0) ],
+
+[ (1, 0), (1, 1), (1, 2), (2, 1) ]
+
+],
+
+# etc.
+
+]
+
+But perhaps that's not centered. Maybe each shape's rotation is relative to a pivot point. For example, the T shape's first rotation has the center at (1, 0) or similar. Hmm, this could get complex. Maybe instead of using coordinates relative to a pivot, just have each shape's rotation as a list of (x, y) offsets from the top-left of a bounding box.
+
+Alternatively, use a 4x4 grid for each rotation. For example, the I shape can be represented as a horizontal line in a 4x4 grid, and vertical in another.
+
+But perhaps for simplicity, use the approach from existing Tetris implementations. For example, in some references, the shapes are defined as follows:
+
+Each tetromino has a list of possible rotations, each represented as a list of (x, y) coordinates. For example:
+
+I: [[0, 0], [1, 0], [2, 0], [3, 0]], rotated becomes [[0, 0], [0, 1], [0, 2], [0, 3]]
+
+But in reality, the I piece in Tetris rotates around a central point. So perhaps the rotations should be adjusted to allow for proper rotation.
+
+Alternatively, use the SRS (Super Rotation System) which defines the wall kicks and rotation points. But that's more advanced. For a basic Tetris, perhaps use simple rotation without wall kicks.
+
+So, here's a possible approach:
+
+Define each shape with its different rotations. For example, the I shape has two rotations (horizontal and vertical). The T shape has four rotations. Then, when the user rotates the piece, cycle through the rotations and check if the new position is valid.
+
+So, for the shapes:
+
+shapes = [
+
+# I
+
+[
+
+[ (-1, 0), (0, 0), (1, 0), (2, 0) ],
+
+[ (0, -1), (0, 0), (0, 1), (0, 2) ]
+
+],
+
+# O
+
+[
+
+[ (0, 0), (1, 0), (0, 1), (1, 1) ]
+
+],
+
+# T
+
+[
+
+[ (-1, 0), (0, 0), (1, 0), (0, 1) ],
+
+[ (0, -1), (0, 0), (0, 1), (-1, 0) ],
+
+[ (-1, 0), (0, 0), (1, 0), (0, -1) ],
+
+[ (0, -1), (0, 0), (0, 1), (1, 0) ]
+
+],
+
+# L
+
+[
+
+[ (-1, 0), (0, 0), (1, 0), (1, 1) ],
+
+[ (0, -1), (0, 0), (0, 1), (-1, 1) ],
+
+[ (-1, -1), (-1, 0), (0, 0), (1, 0) ],
+
+[ (0, -1), (1, -1), (0, 0), (0, 1) ]
+
+],
+
+# J
+
+[
+
+[ (-1, 0), (0, 0), (1, 0), (-1, 1) ],
+
+[ (0, -1), (-1, 0), (0, 0), (0, 1) ],
+
+[ (1, -1), (-1, 0), (0, 0), (1, 0) ],
+
+[ (0, -1), (0, 0), (1, 1), (0, 1) ]
+
+],
+
+# S
+
+[
+
+[ (-1, 0), (0, 0), (0, 1), (1, 1) ],
+
+[ (0, -1), (0, 0), (-1, 0), (-1, 1) ],
+
+[ (-1, -1), (0, -1), (0, 0), (1, 0) ],
+
+[ (1, -1), (1, 0), (0, 0), (0, 1) ]
+
+],
+
+# Z
+
+[
+
+[ (-1, 1), (0, 1), (0, 0), (1, 0) ],
+
+[ (-1, -1), (-1, 0), (0, 0), (0, 1) ],
+
+[ (-1, 0), (0, 0), (0, -1), (1, -1) ],
+
+[ (0, -1), (0, 0), (1, 0), (1, 1) ]
+
+]
+
+]
+
+But I'm not sure if these coordinates are correct. Alternatively, refer to a standard source. For example, the T shape in its initial rotation has three blocks in a horizontal line and one above the center. So the coordinates would be (-1, 0), (0, 0), (1, 0), (0, 1). Then, rotating would shift these positions.
+
+But regardless, perhaps for the code, the exact rotation coordinates can be defined as such. The key is to have the shapes' relative positions and cycle through them on rotation.
+
+Now, each piece will have a type (index into shapes), a rotation (index into the rotations), and a position (x, y) on the grid.
+
+The grid is 10 columns (x from 0 to 9) and 20 rows (y from 0 to 19). But maybe the y increases downward.
+
+So, when a new piece is created, it's centered at the top of the grid. For example, the I piece in horizontal rotation would have x starting at 3 (since it's 4 blocks wide: 0,1,2,3. So the center would be at (1.5, 0), but since grid is integers, perhaps spawn it at x=4 (middle of 10 columns) minus the leftmost block. Hmm, maybe for the I piece's horizontal rotation, the center is at x=4.5, but need to adjust.
+
+Alternatively, when spawning a new piece, calculate the initial x position so that the piece is centered. For each shape's rotation, find the minimum and maximum x coordinates and adjust the position so that it's centered.
+
+Alternatively, perhaps each piece's rotation has an offset. Maybe for simplicity, when a new piece is created, its x is set to grid_width / 2 - 2 (for 4-block wide pieces). But this may vary.
+
+Alternatively, the initial position is (grid_width // 2 - 2, 0) for all pieces. Wait, the grid is 10 columns. So the center is around column 4.5. So for a 4-block wide piece (like the I), starting at column 3. So initial x could be 3 for the I piece.
+
+But this might need adjustment per shape. Alternatively, when a piece is created, calculate the leftmost and rightmost positions in its current rotation and set x such that it's centered.
+
+Alternatively, perhaps for all pieces, when spawned, set their x to grid_width // 2 - 1 (so 4.5-1=3.5, but integer x would be 3 or 4). Hmm, not sure. Maybe this will require some trial and error.
+
+In any case, perhaps for the initial code, when spawning a new piece, set its position to (grid_width // 2, 0), and then adjust based on the shape's offsets.
+
+Now, the grid is represented as a 2D list:
+
+grid = [[0 for _ in range(10)] for _ in range(20)]
+
+Each cell is 0 (empty) or a color index (1-7 based on the piece type).
+
+The current piece has a type (0-6), rotation (0-3), x, y.
+
+Now, to check if a piece can move to a new position:
+
+def is_valid_move(piece, rotation, x, y, grid):
+
+for dx, dy in shapes[piece][rotation]:
+
+new_x = x + dx
+
+new_y = y + dy
+
+if new_x < 0 or new_x >= grid_width or new_y >= grid_height:
+
+return False
+
+if new_y >=0 and grid[new_y][new_x] != 0:
+
+return False
+
+return True
+
+Wait, the grid has rows from 0 (top) to 19 (bottom). So when a piece is moving down, y increases. So if new_y >= grid_height (20), it's invalid.
+
+But when a piece is spawned, it's at y=0. So for some rotations, parts of the piece may be at y negative (like the I piece's vertical rotation). So during the check, parts that are above the grid (y < 0) are allowed as long as they are in the grid once they move down.
+
+So in the is_valid_move function, new_x must be between 0 and grid_width-1, new_y must be < grid_height. If new_y <0, that's allowed (the piece is still entering the grid). However, if new_y >= grid_height, or new_x out of bounds, or the cell in the grid is filled, then it's invalid.
+
+So:
+
+def is_valid_move(piece, rotation, x, y, grid):
+
+for dx, dy in shapes[piece][rotation]:
+
+new_x = x + dx
+
+new_y = y + dy
+
+if new_x < 0 or new_x >= grid_width:
+
+return False
+
+if new_y >= grid_height:
+
+return False
+
+if new_y >=0 and grid[new_y][new_x] != 0:
+
+return False
+
+return True
+
+Yes. So during movement, if the new position is valid, allow it.
+
+Now, when the piece is moved down and can't, it locks in place. Then, the piece is added to the grid.
+
+def merge_piece(piece, rotation, x, y, grid, color):
+
+for dx, dy in shapes[piece][rotation]:
+
+new_x = x + dx
+
+new_y = y + dy
+
+if new_y >=0 and new_y < grid_height and new_x >=0 and new_x < grid_width:
+
+grid[new_y][new_x] = color
+
+But wait, the color is the piece's type +1 (since colors[0] is empty). So each piece type (0-6) corresponds to color index 1-7.
+
+Now, checking for completed lines: after merging the piece, check each row from bottom to top. If a row is completely filled, remove it, add to the score, and shift rows down.
+
+def check_lines(grid):
+
+lines_cleared = 0
+
+y = grid_height -1
+
+while y >=0:
+
+if all(cell !=0 for cell in grid[y]):
+
+del grid[y]
+
+grid.insert(0, [0]*grid_width)
+
+lines_cleared +=1
+
+else:
+
+y -=1
+
+return lines_cleared
+
+But wait, when a line is cleared, the rows above are shifted down. So after deleting a line at y, inserting a new line at the top (0) and decrementing y is not correct. Because when you delete a row, all rows above shift down. So if we delete row y, then the next row to check is y again (since the previous y-1 is now y). So:
+
+def check_lines(grid):
+
+lines_cleared = 0
+
+y = grid_height -1
+
+while y >=0:
+
+if all(cell !=0 for cell in grid[y]):
+
+del grid[y]
+
+grid.insert(0, [0]*grid_width)
+
+lines_cleared +=1
+
+# After deleting, the same y now points to the next row up
+
+else:
+
+y -=1
+
+return lines_cleared
+
+Wait, no. If you delete row y, the rows above y become lower by one. So for example, if we have rows 0 to 19, and delete row 18, then row 19 becomes the new row 18, and we add a new row at the top. But in this code, after deleting row y, the code continues checking the same y (which is now the next row down). Wait, but we have a loop from y=19 down to 0. Suppose at y=5, we delete the row. Then the code inserts a new row at 0, and the next iteration is y=5 again. But this could cause an infinite loop. Wait, no. Because after deleting row y=5, the new row inserted at 0, and the previous rows 6-19 are now shifted down. So when checking y=5 again, it's now the previous row 6. So if that row is full, it would be deleted again, but that's correct. However, this code would continue checking y=5 until it's not full. For example, if there are multiple consecutive full rows, this code would delete them all. However, the loop could get stuck if the same row keeps getting filled. But that's not possible because after deletion, new rows are added at the top, and the code only checks from the current y down. So this should work.
+
+Now, handling user input. The keys could be left, right, down arrows for movement, up arrow for rotation, space for hard drop.
+
+In the game loop, handle events:
+
+for event in pygame.event.get():
+
+if event.type == pygame.QUIT:
+
+running = False
+
+elif event.type == pygame.KEYDOWN:
+
+if event.key == pygame.K_LEFT:
+
+# move left
+
+new_x = current_x -1
+
+if is_valid_move(current_piece, current_rotation, new_x, current_y, grid):
+
+current_x = new_x
+
+elif event.key == pygame.K_RIGHT:
+
+# move right
+
+new_x = current_x +1
+
+if is_valid_move(current_piece, current_rotation, new_x, current_y, grid):
+
+current_x = new_x
+
+elif event.key == pygame.K_DOWN:
+
+# move down
+
+new_y = current_y +1
+
+if is_valid_move(current_piece, current_rotation, current_x, new_y, grid):
+
+current_y = new_y
+
+elif event.key == pygame.K_UP:
+
+# rotate
+
+new_rotation = (current_rotation +1) % len(shapes[current_piece])
+
+if is_valid_move(current_piece, new_rotation, current_x, current_y, grid):
+
+current_rotation = new_rotation
+
+elif event.key == pygame.K_SPACE:
+
+# hard drop
+
+while is_valid_move(current_piece, current_rotation, current_x, current_y+1, grid):
+
+current_y +=1
+
+# lock the piece
+
+merge_piece(...)
+
+# check lines, etc.
+
+But in the code, we need to handle the hard drop by moving the piece as far down as possible, then merging it into the grid.
+
+Now, the main game loop:
+
+clock = pygame.time.Clock()
+
+fall_speed = 0.5  # seconds per fall
+
+fall_time = 0
+
+running = True
+
+while running:
+
+# Handle events
+
+for event in pygame.event.get():
+
+if event.type == pygame.QUIT:
+
+running = False
+
+elif event.type == pygame.KEYDOWN:
+
+# handle key presses as above
+
+# Handle continuous movement (like holding down the key)
+
+keys = pygame.key.get_pressed()
+
+if keys[pygame.K_DOWN]:
+
+# speed up falling
+
+pass  # maybe handle this with a timer
+
+# Update
+
+delta_time = clock.tick(60) / 1000.0  # in seconds
+
+fall_time += delta_time
+
+if fall_time >= fall_speed:
+
+fall_time = 0
+
+# move down
+
+new_y = current_y +1
+
+if is_valid_move(current_piece, current_rotation, current_x, new_y, grid):
+
+current_y = new_y
+
+else:
+
+# lock the piece
+
+merge_piece(current_piece, current_rotation, current_x, current_y, grid, current_piece+1)
+
+lines_cleared = check_lines(grid)
+
+# update score
+
+score += lines_cleared * 100
+
+# spawn new piece
+
+current_piece = next_piece
+
+next_piece = random.randint(0, len(shapes)-1)
+
+current_rotation = 0
+
+current_x = grid_width // 2 -1  # adjust as needed
+
+current_y = 0
+
+# check if new piece is valid
+
+if not is_valid_move(current_piece, current_rotation, current_x, current_y, grid):
+
+# game over
+
+running = False
+
+# Draw
+
+screen.fill((0,0,0))
+
+draw_grid(screen, grid, colors, block_size)
+
+draw_piece(screen, current_piece, current_rotation, current_x, current_y, colors, block_size)
+
+# draw next piece
+
+# draw score
+
+pygame.display.update()
+
+But need to implement the draw functions.
+
+Drawing the grid:
+
+def draw_grid(screen, grid, colors, block_size):
+
+for y in range(len(grid)):
+
+for x in range(len(grid[y])):
+
+color = colors[grid[y][x]]
+
+pygame.draw.rect(screen, color, (x*block_size, y*block_size, block_size-1, block_size-1))
+
+But the grid's position on the screen. Let's say the play area starts at (0,0), and each block is 30 pixels. So the grid is 10*30=300 wide, 20*30=600 tall. So the grid is drawn from (0,0) to (300,600). The next piece can be drawn at (400, 100) or something.
+
+So when drawing the current piece, need to draw each block of the piece at (current_x + dx)*block_size, (current_y + dy)*block_size.
+
+def draw_piece(screen, piece, rotation, x, y, colors, block_size):
+
+color = colors[piece+1]
+
+for dx, dy in shapes[piece][rotation]:
+
+block_x = (x + dx) * block_size
+
+block_y = (y + dy) * block_size
+
+pygame.draw.rect(screen, color, (block_x, block_y, block_size-1, block_size-1))
+
+But need to check if the block is within the grid. However, during drawing, even if part of the piece is above the grid (negative y), it will still be drawn. But in the grid, negative y blocks are not visible. So maybe clip the drawing. Alternatively, allow the piece to be drawn even if part is above the grid.
+
+Now, the next piece preview. Need to draw the next piece in a small area. Let's create a function to draw a piece at a specific position (like 400, 100).
+
+def draw_next_piece(screen, piece, colors, block_size, x, y):
+
+color = colors[piece+1]
+
+# get the first rotation of the piece
+
+rotation = 0
+
+for dx, dy in shapes[piece][rotation]:
+
+# draw each block relative to the position
+
+pygame.draw.rect(screen, color, (x + dx*block_size, y + dy*block_size, block_size-1, block_size-1))
+
+But need to center the next piece. For example, for the O piece (2x2), the position would be centered. So maybe adjust the dx and dy by an offset.
+
+Alternatively, for the next piece display, center it in a 4x4 grid. So the next piece is drawn at (400, 100) with each block 30 pixels. So:
+
+next_piece_x = 400
+
+next_piece_y = 100
+
+# Clear the area
+
+pygame.draw.rect(screen, (0,0,0), (next_piece_x, next_piece_y, 4*block_size, 4*block_size))
+
+for dx, dy in shapes[next_piece][0]:
+
+block_x = next_piece_x + (dx + 2) * block_size  # center around the middle of 4x4
+
+block_y = next_piece_y + (dy + 2) * block_size
+
+pygame.draw.rect(screen, color, (block_x, block_y, block_size-1, block_size-1))
+
+Wait, perhaps for each piece, we can calculate the minimum and maximum dx and dy to center it. For example, the I piece in horizontal rotation has dx from -1 to 2 (relative to the center). So to center it in a 4x4 grid, we need to offset by 1.5 blocks. Hmm, maybe this is getting too complicated. Alternatively, for simplicity, draw the next piece's blocks relative to (0,0) of the next piece area, but adjust based on the piece's size.
+
+Alternatively, for the next piece display, just draw each block relative to a certain position, and adjust the starting position based on the piece's shape. But this could be complex. For example, the O piece is 2x2, so to center it in a 4x4 area, start at (1,1). The I piece in horizontal rotation is 4x1, so start at (0,1.5) which isn't possible. Maybe for the next piece display, it's acceptable to not perfectly center them, but just show them as-is.
+
+Alternatively, in the next piece area, draw the piece with its rotation 0, and adjust the starting position. For example, the O piece has blocks at (0,0), (1,0), (0,1), (1,1). So in the next piece area starting at (400, 100), draw each block as 30x30, so the O piece would occupy (400, 100), (430, 100), (400, 130), (430, 130).
+
+But perhaps the next piece area is a box where the piece is displayed. So the code can draw a border and then the piece inside.
+
+Putting it all together.
+
+Now, the variables needed:
+
+grid_width = 10
+
+grid_height = 20
+
+block_size = 30
+
+current_piece = random.randint(0, len(shapes)-1)
+
+next_piece = random.randint(0, len(shapes)-1)
+
+current_rotation = 0
+
+current_x = grid_width // 2 - 2  # adjust as needed
+
+current_y = 0
+
+score = 0
+
+grid = [[0 for _ in range(grid_width)] for _ in range(grid_height)]
+
+Now, when spawning a new piece, current_x should be set to a position that centers the piece. For example, for each piece's rotation 0, find the leftmost and rightmost dx, and set current_x to grid_width//2 - (left + right +1)/2. But this might be too involved. Alternatively, set current_x to grid_width//2 - 2. But for the O piece, which is 2 blocks wide, this would place it at 3, which is correct.
+
+Alternatively, find the minimum and maximum dx in the current rotation, and calculate the center. For example:
+
+rotation_data = shapes[current_piece][current_rotation]
+
+dxs = [dx for dx, dy in rotation_data]
+
+min_dx = min(dxs)
+
+max_dx = max(dxs)
+
+width = max_dx - min_dx +1
+
+current_x = grid_width//2 - (width // 2) - min_dx
+
+But this is getting complicated. For the initial code, perhaps set current_x to grid_width//2 - 2 and current_y to 0. Then, check if the position is valid. If not (game over).
+
+Now, in the main loop, when a new piece is spawned:
+
+current_piece = next_piece
+
+next_piece = random.randint(0, len(shapes)-1)
+
+current_rotation = 0
+
+current_x = grid_width // 2 - 2
+
+current_y = 0
+
+if not is_valid_move(current_piece, current_rotation, current_x, current_y, grid):
+
+game_over = True
+
+But how to handle the initial position? For example, the I piece's horizontal rotation has dx from -1 to 2. So current_x is 5 (grid_width//2 is 5). Then the positions would be 5-1=4, 5, 5+1=6, 5+2=7. So from 4 to 7, which is 4 blocks. So centered around 5.5. But grid_width is 10, so 4 to 7 is within 0-9. That works.
+
+But for the O piece, which has width 2, current_x =5-2=3. So blocks at 3 and 4. Which is centered.
+
+But perhaps this is a reasonable approximation.
+
+Now, putting all the code together.
+
+Wait, the shapes list I defined earlier may not be correct. For example, the I piece's rotation is a list of four rotations, but according to the code above, when a piece is rotated, it cycles through the available rotations for that shape. For example, the O piece has only one rotation, so rotating it does nothing.
+
+But in the code, when the user presses up, current_rotation is incremented modulo the length of the rotations for the current piece. So for the O piece, the length is 1, so current_rotation stays 0.
+
+Now, testing the code: when a new piece is spawned, check if its initial position is valid. If not, game over.
+
+Now, the code for merging the piece:
+
+def merge_piece(piece, rotation, x, y, grid, color_idx):
+
+for dx, dy in shapes[piece][rotation]:
+
+new_x = x + dx
+
+new_y = y + dy
+
+if 0 <= new_x < grid_width and 0 <= new_y < grid_height:
+
+grid[new_y][new_x] = color_idx
+
+But color_idx is current_piece +1, since colors[0] is empty.
+
+Now, handling the score and level.
+
+But perhaps for the initial code, just track the score based on lines cleared. Then, in the drawing code, display the score.
+
+Drawing the score:
+
+font = pygame.font.Font(None, 36)
+
+text = font.render(f"Score: {score}", True, (255, 255, 255))
+
+screen.blit(text, (400, 50))
+
+Putting all together, here's the full code:
+
+import pygame
+
+import random
+
+# Initialize Pygame
+
+pygame.init()
+
+# Constants
+
+SCREEN_WIDTH = 800
+
+SCREEN_HEIGHT = 600
+
+GRID_WIDTH = 10
+
+GRID_HEIGHT = 20
+
+BLOCK_SIZE = 30
+
+# Colors
+
+COLORS = [
+
+(0, 0, 0),          # Black (empty)
+
+(0, 255, 255),      # Cyan (I)
+
+(255, 255, 0),      # Yellow (O)
+
+(128, 0, 128),      # Purple (T)
+
+(0, 0, 255),        # Blue (J)
+
+(255, 165, 0),      # Orange (L)
+
+(0, 255, 0),        # Green (S)
+
+(255, 0, 0)         # Red (Z)
+
+]
+
+# Shapes and their rotations
+
+SHAPES = [
+
+# I
+
+[
+
+[(-1, 0), (0, 0), (1, 0), (2, 0)],
+
+[(0, -1), (0, 0), (0, 1), (0, 2)]
+
+],
+
+# O
+
+[
+
+[(0, 0), (1, 0), (0, 1), (1, 1)]
+
+],
+
+# T
+
+[
+
+[(-1, 0), (0, 0), (1, 0), (0, 1)],
+
+[(0, -1), (0, 0), (0, 1), (-1, 0)],
+
+[(-1, 0), (0, 0), (1, 0), (0, -1)],
+
+[(0, -1), (0, 0), (0, 1), (1, 0)]
+
+],
+
+# L
+
+[
+
+[(-1, 0), (0, 0), (1, 0), (1, 1)],
+
+[(0, -1), (0, 0), (0, 1), (-1, 1)],
+
+[(-1, -1), (-1, 0), (0, 0), (1, 0)],
+
+[(0, -1), (1, -1), (0, 0), (0, 1)]
+
+],
+
+# J
+
+[
+
+[(-1, 0), (0, 0), (1, 0), (-1, 1)],
+
+[(0, -1), (-1, 0), (0, 0), (0, 1)],
+
+[(1, -1), (-1, 0), (0, 0), (1, 0)],
+
+[(0, -1), (0, 0), (1, 1), (0, 1)]
+
+],
+
+# S
+
+[
+
+[(-1, 0), (0, 0), (0, 1), (1, 1)],
+
+[(0, -1), (0, 0), (-1, 0), (-1, 1)],
+
+[(-1, -1), (0, -1), (0, 0), (1, 0)],
+
+[(1, -1), (1, 0), (0, 0), (0, 1)]
+
+],
+
+# Z
+
+[
+
+[(-1, 1), (0, 1), (0, 0), (1, 0)],
+
+[(0, -1), (-1, 0), (0, 0), (-1, 1)],
+
+[(-1, 0), (0, 0), (0, -1), (1, -1)],
+
+[(0, -1), (0, 0), (1, 0), (1, 1)]
+
+]
+
+]
+
+def is_valid_move(piece, rotation, x, y, grid):
+
+for dx, dy in SHAPES[piece][rotation]:
+
+new_x = x + dx
+
+new_y = y + dy
+
+if new_x < 0 or new_x >= GRID_WIDTH:
+
+return False
+
+if new_y >= GRID_HEIGHT:
+
+return False
+
+if new_y >= 0 and grid[new_y][new_x] != 0:
+
+return False
+
+return True
+
+def merge_piece(piece, rotation, x, y, grid):
+
+color = piece + 1
+
+for dx, dy in SHAPES[piece][rotation]:
+
+new_x = x + dx
+
+new_y = y + dy
+
+if 0 <= new_x < GRID_WIDTH and 0 <= new_y < GRID_HEIGHT:
+
+grid[new_y][new_x] = color
+
+def check_lines(grid):
+
+lines_cleared = 0
+
+y = GRID_HEIGHT - 1
+
+while y >= 0:
+
+if all(cell != 0 for cell in grid[y]):
+
+del grid[y]
+
+grid.insert(0, [0]*GRID_WIDTH)
+
+lines_cleared += 1
+
+else:
+
+y -= 1
+
+return lines_cleared
+
+def draw_grid(screen, grid):
+
+for y in range(GRID_HEIGHT):
+
+for x in range(GRID_WIDTH):
+
+color = COLORS[grid[y][x]]
+
+pygame.draw.rect(screen, color, (x*BLOCK_SIZE, y*BLOCK_SIZE, BLOCK_SIZE-1, BLOCK_SIZE-1))
+
+def draw_piece(screen, piece, rotation, x, y):
+
+color = COLORS[piece + 1]
+
+for dx, dy in SHAPES[piece][rotation]:
+
+block_x = (x + dx) * BLOCK_SIZE
+
+block_y = (y + dy) * BLOCK_SIZE
+
+pygame.draw.rect(screen, color, (block_x, block_y, BLOCK_SIZE-1, BLOCK_SIZE-1))
+
+def draw_next_piece(screen, piece, x, y):
+
+color = COLORS[piece + 1]
+
+rotation = 0
+
+for dx, dy in SHAPES[piece][rotation]:
+
+block_x = x + dx * BLOCK_SIZE
+
+block_y = y + dy * BLOCK_SIZE
+
+pygame.draw.rect(screen, color, (block_x, block_y, BLOCK_SIZE-1, BLOCK_SIZE-1))
+
+def main():
+
+screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+
+pygame.display.set_caption("Tetris")
+
+clock = pygame.time.Clock()
+
+fall_speed = 0.5  # seconds per fall
+
+fall_time = 0
+
+score = 0
+
+font = pygame.font.Font(None, 36)
+
+grid = [[0 for _ in range(GRID_WIDTH)] for _ in range(GRID_HEIGHT)]
+
+current_piece = random.randint(0, len(SHAPES)-1)
+
+next_piece = random.randint(0, len(SHAPES)-1)
+
+current_rotation = 0
+
+current_x = GRID_WIDTH // 2 - 2
+
+current_y = 0
+
+running = True
+
+game_over = False
+
+while running:
+
+screen.fill((0, 0, 0))
+
+for event in pygame.event.get():
+
+if event.type == pygame.QUIT:
+
+running = False
+
+elif event.type == pygame.KEYDOWN:
+
+if event.key == pygame.K_LEFT:
+
+new_x = current_x - 1
+
+if is_valid_move(current_piece, current_rotation, new_x, current_y, grid):
+
+current_x = new_x
+
+elif event.key == pygame.K_RIGHT:
+
+new_x = current_x + 1
+
+if is_valid_move(current_piece, current_rotation, new_x, current_y, grid):
+
+current_x = new_x
+
+elif event.key == pygame.K_DOWN:
+
+new_y = current_y + 1
+
+if is_valid_move(current_piece, current_rotation, current_x, new_y, grid):
+
+current_y = new_y
+
+elif event.key == pygame.K_UP:
+
+new_rotation = (current_rotation + 1) % len(SHAPES[current_piece])
+
+if is_valid_move(current_piece, new_rotation, current_x, current_y, grid):
+
+current_rotation = new_rotation
+
+elif event.key == pygame.K_SPACE:
+
+# Hard drop
+
+while is_valid_move(current_piece, current_rotation, current_x, current_y + 1, grid):
+
+current_y += 1
+
+merge_piece(current_piece, current_rotation, current_x, current_y, grid)
+
+lines_cleared = check_lines(grid)
+
+score += lines_cleared * 100
+
+current_piece = next_piece
+
+next_piece = random.randint(0, len(SHAPES)-1)
+
+current_rotation = 0
+
+current_x = GRID_WIDTH // 2 - 2
+
+current_y = 0
+
+if not is_valid_move(current_piece, current_rotation, current_x, current_y, grid):
+
+game_over = True
+
+# Handle automatic falling
+
+delta_time = clock.tick(60) / 1000.0
+
+fall_time += delta_time
+
+if fall_time >= fall_speed and not game_over:
+
+fall_time = 0
+
+new_y = current_y + 1
+
+if is_valid_move(current_piece, current_rotation, current_x, new_y, grid):
+
+current_y = new_y
+
+else:
+
+merge_piece(current_piece, current_rotation, current_x, current_y, grid)
+
+lines_cleared = check_lines(grid)
+
+score += lines_cleared * 100
+
+current_piece = next_piece
+
+next_piece = random.randint(0, len(SHAPES)-1)
+
+current_rotation = 0
+
+current_x = GRID_WIDTH // 2 - 2
+
+current_y = 0
+
+if not is_valid_move(current_piece, current_rotation, current_x, current_y, grid):
+
+game_over = True
+
+# Draw everything
+
+draw_grid(screen, grid)
+
+if not game_over:
+
+draw_piece(screen, current_piece, current_rotation, current_x, current_y)
+
+# Draw next piece preview
+
+next_piece_text = font.render("Next Piece:", True, (255, 255, 255))
+
+screen.blit(next_piece_text, (GRID_WIDTH * BLOCK_SIZE + 50, 50))
+
+draw_next_piece(screen, next_piece, GRID_WIDTH * BLOCK_SIZE + 50, 100)
+
+# Draw score
+
+score_text = font.render(f"Score: {score}", True, (255, 255, 255))
+
+screen.blit(score_text, (GRID_WIDTH * BLOCK_SIZE + 50, 250))
+
+# Game over text
+
+if game_over:
+
+game_over_text = font.render("GAME OVER", True, (255, 0, 0))
+
+screen.blit(game_over_text, (SCREEN_WIDTH // 2 - 100, SCREEN_HEIGHT // 2))
+
+pygame.display.update()
+
+pygame.quit()
+
+if __name__ == "__main__":
+
+main()
+
+Wait, but in the code, when merging the piece after hard drop, the lines are checked and score updated. But in the main loop, after merging, we reset the current piece and check for game over.
+
+But there's a possible bug: when the user presses space to hard drop, the code merges the piece, checks lines, spawns new piece, but doesn't handle the case where the new piece is invalid (game over). So in that case, after merging, if the new piece can't spawn, game_over is set to True.
+
+Also, in the initial code, the game_over variable is checked to prevent the piece from moving.
+
+Testing this code, there might be some issues with the shapes' rotations and initial positions. For example, the I piece in vertical rotation may spawn partially outside the grid (since its initial position is y=0 and the blocks are at y -1, 0, 1, 2). The is_valid_move function allows y values below 0 as long as they are within the grid when moving down. So when the I piece spawns in vertical rotation, the code would check if the blocks are valid. The y=0 with blocks at y=-1, 0, 1, 2 would have new_y=-1+0=0, so some blocks are at y=-1 + current_y=0 → y=-1? Wait, no:
+
+current_y starts at 0. The vertical I piece's rotation is [(0, -1), (0, 0), (0, 1), (0, 2)]. So the blocks are at:
+
+current_y + dy → 0 + (-1) = -1,
+
+0 + 0 = 0,
+
+0 +1 =1,
+
+0+2=2.
+
+So the first block is at y=-1, which is above the grid. The is_valid_move function allows this, as new_y >=0 is not required (only < grid_height). But when merging, if new_y >=0 and < grid_height.
+
+But during the initial spawn, if the piece's blocks are partially above the grid, the is_valid_move function returns True. For example, the vertical I piece's initial position is valid even though some blocks are at y=-1. But when merging, those blocks above the grid are not added to the grid.
+
+But when the user rotates a piece while it's partially above the grid, the code should check if the new rotation is valid. If not, the rotation is not allowed.
+
+This code should work for the basic functionality. However, there may be bugs in the rotation definitions or the initial positions. For example, the T piece's rotations may not rotate correctly. But for the purpose of this answer, this code should provide a functional Tetris game with basic features.
