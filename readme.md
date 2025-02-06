@@ -25,7 +25,40 @@ Pylint was used to ensure that our evaluation scripts met a basic standard of co
 
 ## Project Structure
 
-LLM-Comparison-Project/ ├── tetris/ │ ├── trial1/ │ │ ├── model1/ # deepseek-r1 │ │ └── model2/ # openai-o3-mini │ └── trial2/ │ ├── model1/ # deepseek-r1 │ └── model2/ # openai-o3-mini ├── hangman/ │ ├── model1/ # deepseek-r1 │ └── model2/ # openai-o3-mini ├── math_puzzle/ │ └── outputs/ # Magic Square experiment outputs ├── token_size/ │ └── token_report.py # Script to generate HTML token report ├── docs/ │ └── analysis.md # Detailed experimental analysis and notes └── .gitignore
+LLM-Comparison-Project/
+├── tetris/
+│   ├── trial1/
+│   │   ├── model1/
+│   │   │   └── outputs/
+│   │   │       ├── reasoning.txt
+│   │   │       └── answer.txt
+│   │   └── model2/
+│   │       └── outputs/
+│   │           ├── reasoning.txt
+│   │           └── answer.txt
+│   └── trial2/
+│       ├── model1/
+│       │   └── outputs/
+│       │       ├── reasoning.txt
+│       │       └── answer.txt
+│       └── model2/
+│           └── outputs/
+│               ├── reasoning.txt
+│               └── answer.txt
+├── hangman/
+│   ├── model1/
+│   │   └── outputs/
+│   │       ├── reasoning.txt
+│   │       └── answer.txt
+│   └── model2/
+│       └── outputs/
+│           ├── reasoning.txt
+│           └── answer.txt
+└── math_puzzle/
+    └── outputs/
+        ├── reasoning.txt
+        └── answer.txt
+
 
 ## Results
 
