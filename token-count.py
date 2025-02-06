@@ -46,6 +46,7 @@ def generate_html_report(rows, output_file):
   </style>
 </head>
 <body>
+<div margin="2rem">
   <h1>Token Size Comparison Report</h1>
   <table>
     <tr>
@@ -60,6 +61,7 @@ def generate_html_report(rows, output_file):
         html_content += row + "\n"
     html_content += """
   </table>
+</div>
 </body>
 </html>"""
     
