@@ -17,14 +17,14 @@ For each experiment, we measured the following metrics:
   - **Total Tokens:** The sum of reasoning and answer tokens.  
   - **Input Tokens:** Tokens from the initial prompt.
 - **Cost Metrics:**  
-  - **Cost per 1M (Output/Input):** Estimated cost per million tokens generated as output or provided as input.  
-  - **Output Cost, Input Cost, Total Cost:** Derived cost estimates based on the token counts.
+  - **Cost per 1M (Output/Input):** These are the cost per 1M tokens as per OpenAi and Deepseek website respectively.  
+  - **Output Cost, Input Cost, Total Cost:** Derived cost estimates based on the token counts and the cost per 1M tokens.
 
 Pylint was used to ensure that our evaluation scripts met a basic standard of code quality.
 
 
 ## Project Structure
-
+```plaintext
 LLM-Comparison-Project/
 ├── tetris/
 │   ├── trial1/
